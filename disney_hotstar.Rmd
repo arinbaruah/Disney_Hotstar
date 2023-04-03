@@ -27,6 +27,17 @@ head(df_title)
 
 ```
 
+# What are we looking to answer ?
+
+After going through a glimpse of the data, here are a few questions that will be addressed in the following study:
+
+1. Temporal analysis of the number of releases for shows and movies over the years.
+2. Movies/Shows with the largest cast members.
+3. Have aggregated IMDB ratings changed over the years ?
+4. Which countries have produced the most content ?
+5. Popular genres over the years and their IMDB ratings.
+6. Distribution of the runtime of the content.
+
 ```{r join_datasets}
 
 df_joined <- merge(x=df_title,y=df_cred,by='id')
