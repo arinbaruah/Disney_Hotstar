@@ -1,0 +1,79 @@
+---
+title: "Disney_Hotstar"
+author: "Arindam Baruah"
+date: "2023-04-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message = FALSE)
+```
+
+```{r load_libraries}
+library(tidyverse)
+library(ggplot2)
+library(tidyr)
+library(kableExtra)
+```
+
+
+```{r read_data}
+
+df_cred <- read_csv('data/credits.csv')
+df_title <- read_csv('data/titles.csv')
+
+head(df_cred)
+head(df_title)
+
+```
+
+```{r join_datasets}
+
+df_joined <- merge(x=df_title,y=df_cred,by='id')
+tail(df_joined)
+```
+```{r data_clean}
+df_joined$production_countries <- df_joined$production_countries %>% str_sub(2,-2)
+
+df_joined$genres <- df_joined$genres %>% str_sub(2,-2)
+
+df_joined <- df_joined %>% select(-description)
+
+df_joined$genres <- df_joined$genres %>% str_replace_all("'","")
+df_joined$production_countries <- df_joined$production_countries %>% str_replace_all("'","")
+
+df_title$production_countries <- df_title$production_countries %>% str_sub(2,-2)
+
+df_title$genres <- df_title$genres %>% str_sub(2,-2)
+
+df_title <- df_title %>% select(-description)
+
+df_title$genres <- df_title$genres %>% str_replace_all("'","")
+df_title$production_countries <- df_title$production_countries %>% str_replace_all("'","")
+
+
+```
+
+
+```{r Characters per movie}
+df_count <- df_joined %>% 
+  group_by(title) %>% 
+  summarise(Number_of_characters= sum(n_distinct(person_id))) %>% 
+  arrange(-Number_of_characters)
+
+head(df_count,10) %>% 
+  kable(caption = 'Number of actors in each movie',booktabs = TRUE) %>% 
+kable_styling(bootstrap_options = c("bordered","hover")) #Creating a table
+
+
+```
+```{r releases by year}
+
+df_releases <- df_title %>% group_by(release_year,type) %>%
+  summarise(Releases=n())
+
+head(df_releases)
+
+```
+
+
