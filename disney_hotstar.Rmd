@@ -86,5 +86,31 @@ df_releases <- df_title %>% group_by(release_year,type) %>%
 head(df_releases)
 
 ```
+```{r country_productions}
+df_countries <- df_joined %>% 
+  group_by(release_year, production_countries,type) %>%
+  summarise(Productions=n()) %>%
+  arrange(-Productions) 
+
+```
+
+```{r popular genres}
+df_genres <- df_joined %>%
+  group_by(release_year,genres,type) %>%
+  summarise(Releases=n())
+```
+
+
+```{r IMDB_ratings}
+df_ratings <- df_title %>% 
+  group_by(release_year,genres) %>%
+  summarise(Mean_IMDB_Score = mean(imdb_score)) %>%
+  filter(Mean_IMDB_Score != 'NA') %>%
+  arrange(release_year)
+```
+
+# How do our visualisations look like ?
+
+## 
 
 
